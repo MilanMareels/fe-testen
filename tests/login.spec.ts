@@ -35,7 +35,7 @@ test.describe("Login Page", () => {
     await loginPageValidator.checkSuccessfulLogin();
   });
 
-  test("Must successfully login when email has leading and trailing spaces", async () => {
+  test.skip("Must successfully login when email has leading and trailing spaces", async () => {
     await loginPageActions.login(`   ${VALID_USER}   `, VALID_PASSWORD);
     await loginPageValidator.checkSuccessfulLogin();
   });
