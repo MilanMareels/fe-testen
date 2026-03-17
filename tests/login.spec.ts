@@ -45,7 +45,7 @@ test.describe("Login Page", () => {
     await loginPageValidator.checkSuccessfulLogin();
   });
 
-  // NATIVE BROWSER VALIDATION (EMPTY FIELDS)
+  // EMPTY FIELDS
 
   test("Must show native browser validation when both fields are empty", async ({ loginPage }) => {
     await loginPageActions.login("", "");
@@ -62,7 +62,7 @@ test.describe("Login Page", () => {
     await loginPageValidator.checkNativeValidationMessage(loginPage.passwordInput);
   });
 
-  // APPLICATION ERROR MESSAGES (INVALID CREDENTIALS)
+  // INVALID CREDENTIALS
 
   test("Must show error message when login with invalid email", async () => {
     await loginPageActions.login(INVALID_USER, VALID_PASSWORD);
