@@ -17,7 +17,6 @@ test.describe("Home Page", () => {
   });
 
   // Load checks
-
   test("Must successfully load home page with valid token", async () => {
     await homePageValidator.checkHomePageLoaded();
   });
@@ -82,5 +81,69 @@ test.describe("Home Page", () => {
   test("Must update chip cound when searching for a product", async () => {
     await homePageActions.searchForProduct(SEARCH_INPUT);
     await homePageValidator.checkHomeChipSectionUpdates("1 items");
+  });
+
+  test("Must successfully open filter dropdown", async () => {
+    await homePageActions.clickFilterButton();
+    await homePageValidator.checkFilterPanel();
+  });
+
+  test("Must successfully filter products when min price is set", async () => {
+    await homePageActions.clickFilterButton();
+
+    await homePageActions.setMinPrice(50);
+    await homePageValidator.checkProductsMinPrice(50);
+  });
+
+  test("Must successfully filter products when max price is set", async () => {
+    await homePageActions.clickFilterButton();
+
+    await homePageActions.setMaxPrice(50);
+    await homePageValidator.checkProductsMaxPrice(50);
+  });
+
+  test("Must successfully filter products from high to low price", async () => {
+    await homePageActions.clickFilterButton();
+
+    await homePageActions.filterBy("desc");
+    await homePageValidator.checkProductsSortedDesc();
+  });
+
+  test("Must successfully filter products from low to high price", async () => {
+    await homePageActions.clickFilterButton();
+
+    await homePageActions.filterBy("asc");
+    await homePageValidator.checkProductsSortedAsc();
+  });
+
+  test("Must filter products by min/max price and sort Low to High", async () => {
+    await homePageActions.clickFilterButton();
+
+    await homePageActions.applyFilters({
+      minPrice: 20,
+      maxPrice: 100,
+      sort: "asc",
+    });
+
+    await homePageValidator.checkFilteredProducts({
+      minPrice: 20,
+      maxPrice: 100,
+      sort: "asc",
+    });
+  });
+  test("Must filter products by min/max price and sort High to Low", async () => {
+    await homePageActions.clickFilterButton();
+
+    await homePageActions.applyFilters({
+      minPrice: 20,
+      maxPrice: 100,
+      sort: "desc",
+    });
+
+    await homePageValidator.checkFilteredProducts({
+      minPrice: 20,
+      maxPrice: 100,
+      sort: "desc",
+    });
   });
 });

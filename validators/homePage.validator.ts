@@ -46,7 +46,7 @@ export class HomePageValidator {
 
   async checkSearchNotActivated(): Promise<void> {
     const products = this.homePage.page.locator("#product-name");
-    await this.homePage.page.waitForTimeout(500);
+    await this.homePage.page.waitForTimeout(2000);
     await expect(products).toHaveCount(12);
   }
 
@@ -58,5 +58,66 @@ export class HomePageValidator {
   async checkHomeChipSectionUpdates(text: string): Promise<void> {
     await expect(this.homePage.home_section_chip).toBeVisible();
     await expect(this.homePage.home_section_chip).toHaveText(text);
+  }
+
+  async checkFilterPanel(): Promise<void> {
+    await this.homePage.page.waitForTimeout(2000);
+    await expect(this.homePage.filer_panel).toBeVisible();
+  }
+
+  async checkProductsSortedAsc(): Promise<void> {
+    await this.homePage.page.waitForTimeout(2000);
+    const prices = await this.getProductPrices();
+    const sorted = [...prices].sort((a, b) => a - b);
+    expect(prices).toEqual(sorted);
+  }
+
+  async checkProductsSortedDesc(): Promise<void> {
+    await this.homePage.page.waitForTimeout(2000);
+    const prices = await this.getProductPrices();
+    const sorted = [...prices].sort((a, b) => b - a);
+    expect(prices).toEqual(sorted);
+  }
+
+  async checkProductsMinPrice(minPrice: number): Promise<void> {
+    await this.homePage.page.waitForTimeout(2000);
+    const prices = await this.getProductPrices();
+
+    for (const price of prices) {
+      expect(price).toBeGreaterThanOrEqual(minPrice);
+    }
+  }
+
+  async checkProductsMaxPrice(maxPrice: number): Promise<void> {
+    await this.homePage.page.waitForTimeout(2000);
+    const prices = await this.getProductPrices();
+
+    for (const price of prices) {
+      expect(price).toBeLessThanOrEqual(maxPrice);
+    }
+  }
+
+  async checkFilteredProducts(options: { minPrice?: number; maxPrice?: number; sort?: "asc" | "desc" }) {
+    if (options.minPrice !== undefined) {
+      await this.checkProductsMinPrice(options.minPrice);
+    }
+
+    if (options.maxPrice !== undefined) {
+      await this.checkProductsMaxPrice(options.maxPrice);
+    }
+
+    if (options.sort) {
+      if (options.sort === "asc") {
+        await this.checkProductsSortedAsc();
+      } else {
+        await this.checkProductsSortedDesc();
+      }
+    }
+  }
+
+  // helpers
+  private async getProductPrices(): Promise<number[]> {
+    const prices = await this.homePage.product_price.allTextContents();
+    return prices.map((price) => parseFloat(price.replace("€", "").replace(",", ".")));
   }
 }
