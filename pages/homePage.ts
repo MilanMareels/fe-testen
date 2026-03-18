@@ -22,6 +22,7 @@ export class HomePage {
   readonly home_cta_secondary: Locator;
   readonly filter_button: Locator;
   readonly filter_sort_select: Locator;
+  readonly clear_filter_button: Locator;
 
   // Inputs
   readonly home_search_input: Locator;
@@ -56,6 +57,7 @@ export class HomePage {
     this.home_cta_secondary = page.locator("#home-cta-secondary");
     this.filter_button = page.locator("#filter-button");
     this.filter_sort_select = page.locator("#filter-group-sort select");
+    this.clear_filter_button = page.locator("#clear-filter-button");
 
     // Inputs
     this.home_search_input = page.locator("#home-search-input");
@@ -71,5 +73,9 @@ export class HomePage {
 
   getMiniCard(index: number): Locator {
     return this.page.locator(`#home-mini-card-${index}`);
+  }
+
+  getCard(index: number): Locator {
+    return this.page.locator(`#product-card-${index}`);
   }
 }

@@ -19,12 +19,20 @@ export class HomePageActions {
     await this.homePage.getMiniCard(index).click();
   }
 
+  async navigateToProductDetailPageByCard(index: number) {
+    await this.homePage.getCard(index).click();
+  }
+
   async searchForProduct(productName: string) {
     await this.homePage.home_search_input.fill(productName);
   }
 
   async clickFilterButton() {
     await this.homePage.filter_button.click();
+  }
+
+  async clickClearFilterButton() {
+    await this.homePage.clear_filter_button.click();
   }
 
   async filterBy(sort: string) {
@@ -48,7 +56,7 @@ export class HomePageActions {
     await input.dispatchEvent("change");
   }
 
-  async applyFilters(options: { minPrice?: number; maxPrice?: number; sort?: "asc" | "desc" }) {
+  async applyFilters(options: { minPrice?: number; maxPrice?: number; sort?: string }) {
     if (options.minPrice !== undefined) {
       await this.setMinPrice(options.minPrice);
     }

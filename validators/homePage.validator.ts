@@ -1,6 +1,8 @@
 import { expect } from "@playwright/test";
 import { HomePage } from "../pages/homePage";
 
+const GLOBAL_WAIT_TIME: number = 2000;
+
 export class HomePageValidator {
   readonly homePage: HomePage;
 
@@ -40,13 +42,13 @@ export class HomePageValidator {
   }
 
   async checkSearchForProduct(productName: string): Promise<void> {
-    await this.homePage.page.waitForTimeout(2000);
+    await this.homePage.page.waitForTimeout(GLOBAL_WAIT_TIME);
     await expect(this.homePage.product_name).toHaveText(productName);
   }
 
   async checkSearchNotActivated(): Promise<void> {
     const products = this.homePage.page.locator("#product-name");
-    await this.homePage.page.waitForTimeout(2000);
+    await this.homePage.page.waitForTimeout(GLOBAL_WAIT_TIME);
     await expect(products).toHaveCount(12);
   }
 
@@ -60,27 +62,31 @@ export class HomePageValidator {
     await expect(this.homePage.home_section_chip).toHaveText(text);
   }
 
-  async checkFilterPanel(): Promise<void> {
-    await this.homePage.page.waitForTimeout(2000);
+  async checkOpenFilterPanel(): Promise<void> {
+    await this.homePage.page.waitForTimeout(GLOBAL_WAIT_TIME);
     await expect(this.homePage.filer_panel).toBeVisible();
+  }
+  async checkCloseFilterPanel(): Promise<void> {
+    await this.homePage.page.waitForTimeout(GLOBAL_WAIT_TIME);
+    await expect(this.homePage.filer_panel).not.toBeVisible();
   }
 
   async checkProductsSortedAsc(): Promise<void> {
-    await this.homePage.page.waitForTimeout(2000);
+    await this.homePage.page.waitForTimeout(GLOBAL_WAIT_TIME);
     const prices = await this.getProductPrices();
     const sorted = [...prices].sort((a, b) => a - b);
     expect(prices).toEqual(sorted);
   }
 
   async checkProductsSortedDesc(): Promise<void> {
-    await this.homePage.page.waitForTimeout(2000);
+    await this.homePage.page.waitForTimeout(GLOBAL_WAIT_TIME);
     const prices = await this.getProductPrices();
     const sorted = [...prices].sort((a, b) => b - a);
     expect(prices).toEqual(sorted);
   }
 
   async checkProductsMinPrice(minPrice: number): Promise<void> {
-    await this.homePage.page.waitForTimeout(2000);
+    await this.homePage.page.waitForTimeout(GLOBAL_WAIT_TIME);
     const prices = await this.getProductPrices();
 
     for (const price of prices) {
@@ -89,7 +95,7 @@ export class HomePageValidator {
   }
 
   async checkProductsMaxPrice(maxPrice: number): Promise<void> {
-    await this.homePage.page.waitForTimeout(2000);
+    await this.homePage.page.waitForTimeout(GLOBAL_WAIT_TIME);
     const prices = await this.getProductPrices();
 
     for (const price of prices) {
@@ -97,7 +103,7 @@ export class HomePageValidator {
     }
   }
 
-  async checkFilteredProducts(options: { minPrice?: number; maxPrice?: number; sort?: "asc" | "desc" }) {
+  async checkFilteredProducts(options: { minPrice?: number; maxPrice?: number; sort?: string }) {
     if (options.minPrice !== undefined) {
       await this.checkProductsMinPrice(options.minPrice);
     }
@@ -113,6 +119,18 @@ export class HomePageValidator {
         await this.checkProductsSortedDesc();
       }
     }
+  }
+
+  async checkIfFiltersAreReset(): Promise<void> {
+    await this.homePage.page.waitForTimeout(GLOBAL_WAIT_TIME);
+    const minFilter = await this.homePage.filter_min_price_input;
+    const maxFilter = await this.homePage.filter_max_price_input;
+    const sortFilter = await this.homePage.filter_sort_select;
+
+    await expect(minFilter).toHaveValue(""); // Geen waarden meer in select
+    await expect(maxFilter).toHaveValue(""); // Geen waarden meer in select
+    await expect(sortFilter).toHaveValue("asc"); // Standaard gesorteerd naar asc
+    await this.checkProductsSortedAsc(); // Standaard gesorteerd naar asc
   }
 
   // helpers
