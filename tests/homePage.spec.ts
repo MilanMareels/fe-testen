@@ -68,7 +68,6 @@ test.describe("Home Page Naviagation checks", () => {
       await homePageActions.navigateToHomePage();
     }
   });
-  // todo propduct card check details nog doen!
 });
 
 test.describe("Home Page Search Checks", () => {
@@ -109,7 +108,7 @@ test.describe("Home Page Search Checks", () => {
 
   test("Must show error message when no search products if found", async () => {
     await homePageActions.searchForProduct("blablablabla");
-    await homePageValidator.checkHomePageErrorMessage();
+    await homePageValidator.checkHomePageErrorMessage("No products found.");
   });
 
   test("Must update chip cound when searching for a product", async () => {
@@ -208,5 +207,17 @@ test.describe("Home Page Filter checks", () => {
     await homePageActions.clickClearFilterButton();
     await homePageActions.clickFilterButton(); // Terug open voor checks
     await homePageValidator.checkIfFiltersAreReset();
+  });
+
+  test("Must not filter products when min price is negative", async () => {
+    await homePageActions.clickFilterButton();
+    await homePageActions.setMinPrice(-1);
+    await homePageValidator.checkHomePageErrorMessage("Minimum price cannot be less than 0.");
+  });
+
+  test("Must not filter products when max price is negative", async () => {
+    await homePageActions.clickFilterButton();
+    await homePageActions.setMaxPrice(-1);
+    await homePageValidator.checkHomePageErrorMessage("Maximum price cannot be less than 0.");
   });
 });

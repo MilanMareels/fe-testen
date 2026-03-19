@@ -52,9 +52,9 @@ export class HomePageValidator {
     await expect(products).toHaveCount(12);
   }
 
-  async checkHomePageErrorMessage(): Promise<void> {
+  async checkHomePageErrorMessage(errorMessage: string): Promise<void> {
     await expect(this.homePage.home_error_message).toBeVisible();
-    await expect(this.homePage.home_error_message).toHaveText("No products found.");
+    await expect(this.homePage.home_error_message).toHaveText(errorMessage);
   }
 
   async checkHomeChipSectionUpdates(text: string): Promise<void> {
