@@ -25,7 +25,7 @@ test.describe("Login Page", () => {
 
   // HAPPY PATH
 
-  test("Must successfully login with valid standard user credentials and navigate to the inventory page", async () => {
+  test("Must successfully login with valid standard user credentials and navigate to the home page", async () => {
     await loginPageActions.login(VALID_USER, VALID_PASSWORD);
     await loginPageValidator.checkSuccessfulLogin();
   });
@@ -40,7 +40,7 @@ test.describe("Login Page", () => {
     await loginPageValidator.checkSuccessfulLogin();
   });
 
-    test("Must successfully login when email is in uppercase", async () => {
+  test("Must successfully login when email is in uppercase", async () => {
     await loginPageActions.login(VALID_USER.toUpperCase(), VALID_PASSWORD);
     await loginPageValidator.checkSuccessfulLogin();
   });
