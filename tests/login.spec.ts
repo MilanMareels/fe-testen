@@ -23,8 +23,6 @@ test.describe("Login Page", () => {
     loginPageValidator = new LoginPageValidator(loginPage);
   });
 
-  // HAPPY PATH
-
   test("Must successfully login with valid standard user credentials and navigate to the home page", async () => {
     await loginPageActions.login(VALID_USER, VALID_PASSWORD);
     await loginPageValidator.checkSuccessfulLogin();
@@ -35,7 +33,7 @@ test.describe("Login Page", () => {
     await loginPageValidator.checkSuccessfulLogin();
   });
 
-  test.skip("Must successfully login when email has leading and trailing spaces", async () => {
+  test("Must successfully login when email has leading and trailing spaces", async () => {
     await loginPageActions.login(`   ${VALID_USER}   `, VALID_PASSWORD);
     await loginPageValidator.checkSuccessfulLogin();
   });
@@ -44,8 +42,6 @@ test.describe("Login Page", () => {
     await loginPageActions.login(VALID_USER.toUpperCase(), VALID_PASSWORD);
     await loginPageValidator.checkSuccessfulLogin();
   });
-
-  // EMPTY FIELDS
 
   test("Must show native browser validation when both fields are empty", async ({ loginPage }) => {
     await loginPageActions.login("", "");
@@ -62,8 +58,6 @@ test.describe("Login Page", () => {
     await loginPageValidator.checkNativeValidationMessage(loginPage.passwordInput);
   });
 
-  // INVALID CREDENTIALS
-
   test("Must show error message when login with invalid email", async () => {
     await loginPageActions.login(INVALID_USER, VALID_PASSWORD);
     await loginPageValidator.checkErrorMessageAfterBadLogin(USER_NOT_FOUND_MESSAGE);
@@ -79,8 +73,6 @@ test.describe("Login Page", () => {
     await loginPageValidator.checkErrorMessageAfterBadLogin(INVALID_CREDENTIALS_MESSAGE);
   });
 
-  // UPPERCASE / LOWERCASE TESTING
-
   test("Must show error message when login with invalid email is in uppercase", async () => {
     await loginPageActions.login(INVALID_USER.toUpperCase(), VALID_PASSWORD);
     await loginPageValidator.checkErrorMessageAfterBadLogin(USER_NOT_FOUND_MESSAGE);
@@ -95,8 +87,6 @@ test.describe("Login Page", () => {
     await loginPageActions.login(VALID_USER, VALID_PASSWORD.toUpperCase());
     await loginPageValidator.checkErrorMessageAfterBadLogin(INVALID_CREDENTIALS_MESSAGE);
   });
-
-  // SECURITY & EDGE CASES
 
   test("Must reject SQL injection attempts in the email field gracefully", async () => {
     const sqlInjectionAttempt = "OR 1=1 --";
@@ -117,7 +107,7 @@ test.describe("Login Page", () => {
   });
 
   // Nog naar backend doen.
-  test.skip("Must lock account or show rate limit message after 5 failed attempts", async () => {
+  test("Must lock account or show rate limit message after 5 failed attempts", async () => {
     for (let i = 0; i < 5; i++) {
       await loginPageActions.login(VALID_USER, INVALID_PASSWORD);
     }
