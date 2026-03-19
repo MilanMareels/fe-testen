@@ -133,6 +133,19 @@ export class HomePageValidator {
     await this.checkProductsSortedAsc(); // Standaard gesorteerd naar asc
   }
 
+  async checkProductPriceExchangeRate(): Promise<void> {
+    const priceLocators = this.homePage.product_price;
+
+    await priceLocators.first().waitFor();
+
+    const count = await priceLocators.count();
+    expect(count).toBe(12);
+
+    for (let i = 0; i < count; i++) {
+      await expect(priceLocators.nth(i)).toContainText("€");
+    }
+  }
+
   // helpers
   private async getProductPrices(): Promise<number[]> {
     const prices = await this.homePage.product_price.allTextContents();

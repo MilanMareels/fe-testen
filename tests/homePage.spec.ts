@@ -157,6 +157,24 @@ test.describe("Home Page Filter checks", () => {
     await homePageValidator.checkProductsMaxPrice(MAX_PRICE);
   });
 
+  test("Must not filter products when min price is greater than max price", async () => {
+    await homePageActions.clickFilterButton();
+    await homePageActions.applyFilters({
+      minPrice: MAX_PRICE, // 100
+      maxPrice: MIN_PRICE, // 20
+    });
+    await homePageValidator.checkHomePageErrorMessage("Minimum price cannot be greater than maximum price.");
+  });
+
+  test("Must not filter products when min price and max price are extrramely high", async () => {
+    await homePageActions.clickFilterButton();
+    await homePageActions.applyFilters({
+      minPrice: 500, // Fix naar een var doen
+      maxPrice: 10000, // Fix naar een var doen
+    });
+    await homePageValidator.checkHomePageErrorMessage("No products found."); // Error message naar een var doen
+  });
+
   test("Must successfully filter products from high to low price", async () => {
     await homePageActions.clickFilterButton();
     await homePageActions.filterBy(SORT_ORDER_DESC);
@@ -197,6 +215,22 @@ test.describe("Home Page Filter checks", () => {
     });
   });
 
+  test("Must filter products by min/max price and sort High to Low with search term", async () => {
+    await homePageActions.clickFilterButton();
+    await homePageActions.applyFilters({
+      minPrice: MIN_PRICE,
+      maxPrice: MAX_PRICE,
+      sort: SORT_ORDER_DESC,
+    });
+    await homePageActions.searchForProduct("Bag");
+    await homePageValidator.checkFilteredProducts({
+      minPrice: MIN_PRICE,
+      maxPrice: MAX_PRICE,
+      sort: SORT_ORDER_DESC,
+    });
+    await homePageValidator.checkSearchForProduct("Bag");
+  });
+
   test("Must successfullyLow resert and close filter dropdown", async () => {
     await homePageActions.clickFilterButton(); // Open
     await homePageActions.applyFilters({
@@ -219,5 +253,21 @@ test.describe("Home Page Filter checks", () => {
     await homePageActions.clickFilterButton();
     await homePageActions.setMaxPrice(-1);
     await homePageValidator.checkHomePageErrorMessage("Maximum price cannot be less than 0.");
+  });
+});
+
+test.describe("Value checks", () => {
+  let homePageActions: HomePageActions;
+  let homePageValidator: HomePageValidator;
+
+  test.beforeEach(async ({ homePage }) => {
+    homePageActions = new HomePageActions(homePage);
+    homePageValidator = new HomePageValidator(homePage);
+
+    await homePageActions.navigateToHomePage();
+  });
+
+  test("Products must have correct exchange rate (Euro sign)", async () => {
+    await homePageValidator.checkProductPriceExchangeRate();
   });
 });
