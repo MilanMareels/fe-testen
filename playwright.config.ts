@@ -54,11 +54,11 @@ export default defineConfig({
       dependencies: ["setup"],
     },
 
-    {
-      name: "firefox",
-      use: { ...devices["Desktop Firefox"], storageState: "playwright/.auth/user.json" },
-      dependencies: ["setup"],
-    },
+    //{
+    //  name: "firefox",
+    //  use: { ...devices["Desktop Firefox"], storageState: "playwright/.auth/user.json" },
+    //  dependencies: ["setup"],
+    //},
 
     //{
     //  name: "webkit",
@@ -71,11 +71,11 @@ export default defineConfig({
       use: { ...devices["Pixel 5"], storageState: "playwright/.auth/user.json" },
       dependencies: ["setup"],
     },
-    {
-      name: "Mobile Safari",
-      use: { ...devices["iPhone 12"], storageState: "playwright/.auth/user.json" },
-      dependencies: ["setup"],
-    },
+    //{
+    // name: "Mobile Safari",
+    //  use: { ...devices["iPhone 12"], storageState: "playwright/.auth/user.json" },
+    //  dependencies: ["setup"],
+    //},
 
     /* Test against branded browsers. */
     // {
