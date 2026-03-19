@@ -34,7 +34,7 @@ export default defineConfig({
     baseURL: process.env.BASE_URL || "http://localhost:3000",
 
     launchOptions: {
-      slowMo: 1000,
+      //slowMo: 1000,
     },
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
