@@ -8,7 +8,7 @@ export class LoginPageActions {
   }
 
   async gotToLoginPage() {
-    await this.loginPage.page.goto("/"); 
+    await this.loginPage.page.goto("/");
   }
 
   async login(username: string, password: string) {
@@ -68,6 +68,28 @@ export class LoginPageActions {
 
     await this.loginPage.userNameInput.fill(email);
     await this.loginPage.passwordInput.fill("");
+
+    await this.loginPage.passwordInput.evaluate((node: HTMLInputElement) => {
+      node.removeAttribute("required");
+    });
+
+    await this.loginPage.page.evaluate(() => {
+      const form = document.querySelector("form");
+      if (form) form.setAttribute("novalidate", "true");
+    });
+
+    await this.clickLoginButton();
+  }
+
+  async loginWithRemovedRequiredAttributes(email: string, password: string) {
+    await this.gotToLoginPage();
+
+    await this.loginPage.userNameInput.fill(email);
+    await this.loginPage.passwordInput.fill(password);
+
+    await this.loginPage.userNameInput.evaluate((node: HTMLInputElement) => {
+      node.removeAttribute("required");
+    });
 
     await this.loginPage.passwordInput.evaluate((node: HTMLInputElement) => {
       node.removeAttribute("required");

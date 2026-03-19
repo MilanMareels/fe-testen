@@ -43,11 +43,6 @@ test.describe("Login Page", () => {
     await loginPageValidator.checkSuccessfulLogin();
   });
 
-  test("Must show native browser validation when both fields are empty", async ({ loginPage }) => {
-    await loginPageActions.login("", "");
-    await loginPageValidator.checkNativeValidationMessage(loginPage.userNameInput);
-  });
-
   test("Must show native browser validation when only email is empty", async ({ loginPage }) => {
     await loginPageActions.login("", VALID_PASSWORD);
     await loginPageValidator.checkNativeValidationMessage(loginPage.userNameInput);
@@ -106,7 +101,7 @@ test.describe("Login Page", () => {
     await loginPageValidator.checkErrorMessageAfterBadLogin(USER_NOT_FOUND_MESSAGE);
   });
 
-  // Nog naar backend doen.
+  // Bug 16
   test("Must lock account or show rate limit message after 5 failed attempts", async () => {
     for (let i = 0; i < 5; i++) {
       await loginPageActions.login(VALID_USER, INVALID_PASSWORD);
@@ -122,6 +117,11 @@ test.describe("Login Page", () => {
 
   test("Must reject login when 'required' attribute is removed and password is left empty", async () => {
     await loginPageActions.loginWithRemovedRequiredPasswordAttribute(VALID_USER);
+    await loginPageValidator.checkErrorMessageAfterBadLogin(REQUIRED_FIELDS_MESSAGE);
+  });
+
+  test("Must show native browser validation when both fields are empty", async () => {
+    await loginPageActions.loginWithRemovedRequiredAttributes("", "");
     await loginPageValidator.checkErrorMessageAfterBadLogin(REQUIRED_FIELDS_MESSAGE);
   });
 });
