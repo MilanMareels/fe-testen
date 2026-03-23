@@ -36,6 +36,11 @@ export class HomePageValidator {
     await expect(this.homePage.card_page).toBeVisible();
   }
 
+  async checkNavigationToProductSection(): Promise<void> {
+    await expect(this.homePage.page).toHaveURL("/#products");
+    await expect(this.homePage.home_products_section).toBeVisible();
+  }
+
   async checkProductDetailPageLoaded(): Promise<void> {
     await expect(this.homePage.page).toHaveURL(/.*product/);
     await expect(this.homePage.product_detail_page).toBeVisible();
@@ -47,7 +52,7 @@ export class HomePageValidator {
   }
 
   async checkSearchNotActivated(): Promise<void> {
-    const products = this.homePage.page.locator("#product-name");
+    const products = this.homePage.product_name;
     await this.homePage.page.waitForTimeout(GLOBAL_WAIT_TIME);
     await expect(products).toHaveCount(12);
   }
@@ -144,6 +149,31 @@ export class HomePageValidator {
     for (let i = 0; i < count; i++) {
       await expect(priceLocators.nth(i)).toContainText("€");
     }
+  }
+
+  async checkIfProductImagesAreVisible(): Promise<void> {
+    const imageLocators = this.homePage.product_image;
+
+    await imageLocators.first().waitFor();
+
+    const count = await imageLocators.count();
+    expect(count).toBe(12);
+
+    for (let i = 0; i < count; i++) {
+      await expect(imageLocators.nth(i)).toBeVisible();
+    }
+  }
+
+  async checkIfChipHasCorrectAmount(amount: number): Promise<void> {
+    const products = this.homePage.product_name;
+
+    await products.first().waitFor();
+
+    const count = await products.count();
+
+    expect(count).toBe(amount);
+
+    await expect(this.homePage.home_section_chip).toHaveText(`${amount} items`);
   }
 
   // helpers

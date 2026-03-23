@@ -53,6 +53,11 @@ test.describe("Home Page Naviagation checks", () => {
     await homePageValidator.checkNavigationToCartPage();
   });
 
+  test.fail("Must successfully navigate to product section", async () => {
+    await homePageActions.navigateToProductSection();
+    await homePageValidator.checkNavigationToProductSection();
+  });
+
   test("Must navigate to product details via mini card", async () => {
     for (let i = 1; i <= 6; i++) {
       await homePageActions.navigateToProductDetailPageByMiniCard(i);
@@ -269,5 +274,13 @@ test.describe("Value checks", () => {
 
   test("Products must have correct exchange rate (Euro sign)", async () => {
     await homePageValidator.checkProductPriceExchangeRate();
+  });
+
+  test("Products must have images", async () => {
+    await homePageValidator.checkIfProductImagesAreVisible();
+  });
+
+  test("Products chip must correct amout of products", async () => {
+    await homePageValidator.checkIfChipHasCorrectAmount(12); // Naar var doen
   });
 });

@@ -15,6 +15,10 @@ export class HomePageActions {
     await this.homePage.home_cta_primary.click();
   }
 
+  async navigateToProductSection() {
+    await this.homePage.home_cta_secondary.click();
+  }
+
   async navigateToProductDetailPageByMiniCard(index: number) {
     await this.homePage.getMiniCard(index).click();
   }

@@ -14,6 +14,9 @@ export class HomePage {
   readonly product_name: Locator;
   readonly product_price: Locator;
 
+  // Image
+  readonly product_image: Locator;
+
   // Errors
   readonly home_error_message: Locator;
 
@@ -51,6 +54,9 @@ export class HomePage {
     // Texts...
     this.product_name = page.locator("#product-name");
     this.product_price = page.locator("#product-price");
+
+    // Image
+    this.product_image = page.locator("#product-image");
 
     // Links and buttons
     this.home_cta_primary = page.locator("#home-cta-primary");

@@ -33,7 +33,7 @@ test.describe("Login Page", () => {
     await loginPageValidator.checkSuccessfulLogin();
   });
 
-  test.skip("Must successfully login when email has leading and trailing spaces", async () => {
+  test("Must successfully login when email has leading and trailing spaces", async () => {
     await loginPageActions.login(`   ${VALID_USER}   `, VALID_PASSWORD);
     await loginPageValidator.checkSuccessfulLogin();
   });
@@ -101,8 +101,7 @@ test.describe("Login Page", () => {
     await loginPageValidator.checkErrorMessageAfterBadLogin(USER_NOT_FOUND_MESSAGE);
   });
 
-  // Bug 16
-  test.skip("Must lock account or show rate limit message after 5 failed attempts", async () => {
+  test("Must lock account or show rate limit message after 5 failed attempts", async () => {
     for (let i = 0; i < 5; i++) {
       await loginPageActions.login(VALID_USER, INVALID_PASSWORD);
     }
