@@ -27,6 +27,7 @@ export class InstancePage {
   readonly instance_select_button: Locator;
   readonly instance_modal_confirm_button: Locator;
   readonly instance_modal_cancel_button: Locator;
+  readonly instance_update_button: Locator;
 
   // Inputs
   readonly instance_input_name: Locator;
@@ -61,6 +62,7 @@ export class InstancePage {
     this.instance_select_button = page.locator("#instance-select-btn-29b798b2-8372-4c2b-9c85-ad4d3d90e627"); // Fix voor UUID
     this.instance_modal_confirm_button = page.locator("#modal-confirm-btn");
     this.instance_modal_cancel_button = page.locator("#modal-cancel-btn");
+    this.instance_update_button = page.locator("#instance-edit-btn-29b798b2-8372-4c2b-9c85-ad4d3d90e627"); // Fix voor UUID
 
     // Inputs
     this.instance_input_name = page.locator("#input-instance-name");

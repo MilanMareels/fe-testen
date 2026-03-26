@@ -19,6 +19,14 @@ export class InstancePageAction {
     await this.instancePage.instance_create_button.click();
   }
 
+  async clickInstanceUpdateButton(name: string) {
+    const instanceCard = this.instancePage.page.locator(".instance-card").filter({ hasText: name });
+    await instanceCard.waitFor({ state: "visible" });
+
+    const editButton = instanceCard.locator(".instance-edit");
+    await editButton.click();
+  }
+
   async clickModalConfirmButton() {
     await this.instancePage.instance_modal_confirm_button.click();
   }

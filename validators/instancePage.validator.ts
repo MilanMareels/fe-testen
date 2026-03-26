@@ -56,17 +56,22 @@ export class InstancePageValidator {
     await expect(this.instancePage.instance_modal_card).toBeVisible();
   }
 
-  async checkIfInstanceModalCardInstanceNameInputIsLoaded(): Promise<void> {
+  async checkIfInstanceModalCardInstanceNameInputIsLoaded(value: string): Promise<void> {
     await expect(this.instancePage.instance_input_name).toBeVisible();
-    await expect(this.instancePage.instance_input_name).toHaveValue("");
+    await expect(this.instancePage.instance_input_name).toHaveValue(value);
   }
 
-  async checkIfInstanceModalCardInstanceCustomerInputIsLoaded(): Promise<void> {
+  async checkIfInstanceModalCardInstanceCustomerInputIsLoaded(value: string): Promise<void> {
     await expect(this.instancePage.instance_input_customer).toBeVisible();
-    await expect(this.instancePage.instance_input_customer).toHaveValue("");
+    await expect(this.instancePage.instance_input_customer).toHaveValue(value);
   }
 
   async checkIfErrorIsDisplayed(text: string): Promise<void> {
     await expect(this.instancePage.modal_error_display).toHaveText(text);
+  }
+
+  async checkIfCreateInstanceFormIsReset(): Promise<void> {
+    await expect(this.instancePage.instance_input_name).toHaveValue("");
+    await expect(this.instancePage.instance_input_customer).toHaveValue("");
   }
 }
